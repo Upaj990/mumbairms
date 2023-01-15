@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bill</title>
+</head>
+<body>
+    <div style="height:fit-content;width: 58mm;display:flex;flex-direction:column;align-items:center;padding:14px 0px;margin: 0px;">
+        <!-- HEADER -->
+        <div style="max-width: 58mm;">
+            <div style="width:100%;display:flex;display: -webkit-box;-webkit-box-pack: center">
+                <p style="font-family: Arial, sans-serif;margin:0px;font-size:12px;text-align:center;font-weight:200;">INVOICE</p>
+            </div>
+            <div style="width:100%;display:flex;display: -webkit-box;-webkit-box-pack: center;margin-top: 4px;">
+                <p style="font-family: Arial, sans-serif;margin:0px;font-size:20px;text-align:center;font-weight:800;margin-top:5px;"><%=item?.restaurant.restaurant_name%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;align-items:center;justify-content: center;">
+                <p style="font-family: Arial, sans-serif;margin:0px;font-size:14px;font-weight:100;">Ph</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family: Arial, sans-serif;margin:0px;font-size:14px;font-weight:100;"><%=item?.restaurant.restaurant_contact_number%></p>
+            </div>
+            <!-- <p style="font-family: Arial;margin-top:10px;font-size:small;">G.T ROAD,CIVIL LINES</p> -->
+            <div style="width:100%;max-width: 30mm;display:flex;display: -webkit-box;-webkit-box-pack: center;">
+                <p style="font-family:Arial;font-size:14px;text-align:center;"><%=item?.restaurant.restaurant_address.address+', '+item?.restaurant.restaurant_address.city+', '+item?.restaurant.restaurant_address.state%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Name</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;"><%=item.user.name%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Ph</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;"><%=item.user.phone%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Order Type</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;"><%=item.order_type === 'dine_in'?'Dine In':'Parcel'%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Table No</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;"><%=item.table.table_no%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Waiter</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;"><%=item?.waiter?.name?item?.waiter?.name:'--'%></p>
+            </div>
+            <div style="width: 100%;display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+                <p style="font-family:Arial;margin:0px;font-size:13px;">Date Time</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;"><%=moment(item.order_date_and_time).utcOffset(330).format('l, h:mm a')%></p>
+            </div>
+        </div>
+        
+        <div style="width:100%;;border:1px;border-color:black;border-style: solid;margin-top:5px;">
+            <table style="width:100%;padding:0px 1px;">
+                <tr style="display:flex;flex-direction:row;align-items:center;justify-content:space-between;padding:2px;"> 
+                  <th style="width:18mm;text-align:left;font-family:Arial;font-size: 14px;font-weight: bold;padding:0px 0px;">Description</th>
+                  <th style="text-align:center;font-family:Arial;font-size: 14px;font-weight: bold;padding:0px 0px;">Qty</th>
+                  <th style="text-align:right;font-family:Arial;font-size: 14px;font-weight: bold;padding:0px 2px;">Amount</th>
+                </tr>
+                <%item.food_items.map((first,index)=>{%>
+                    <tr style="display:flex;flex-direction:row;align-items:flex-start;vertical-align: top;justify-content:space-between;padding:0px 1px"> 
+                        <td style="font-family:Arial;font-size: 13px;width:18mm;">
+                            <p style="margin: 0px;"><%=index+1%>.<%=first.menu_name%></p>
+                            <% if (first.addons_categories.length !== 0) {%>
+                                <%first.selectAddons.map((second,index)=>{%>
+                                    <div style="display:flex;display: -webkit-box;-webkit-box-pack:start;align-items:flex-start;justify-content: flex-start;">
+                                        <div style="height: 3px;width: 3px;background-color: black;border-radius: 100%;margin-right: 2px;margin-top: 2.4px;"></div>
+                                        <p style="margin: 0px;"><%=first.selectAddonsValues.filter((a)=>a.parent === second.parent).map((b)=>b.name).join(', ')%></p>
+                                    </div>
+                                    
+                                <%})%>
+                            <%}%>
+                        </td>
+                        <td style="text-align:center;font-family:Arial;font-size: 13px;"><%=first.quantity%></td>
+                        <td style="width:8mm;text-align:right;font-family:Arial;font-size: 13px;padding:0px 2px;"><%=first.addons_categories.length === 0?(first.price*Number(first.quantity)).toLocaleString('en-US'):Number((first.selectAddonsValues.map((a)=>Number(a.price)).reduce(function (previousValue, currentValue){return previousValue + currentValue})+first.price)*Number(first.quantity)).toLocaleString('en-US')%></td>
+                    </tr>
+                <%})%>
+            </table>
+        </div>
+        <div style="width:100%;display:flex;display: -webkit-box;-webkit-box-orient: vertical;-webkit-box-align:end;margin-top:6px;">
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">SubTotal</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px;"><%=item.subtotal.toLocaleString('en-US')%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Service Charges <%=item.restaurant.service_tax_amount%><%=item.restaurant.service_tax_type === 'percentage'?'%':'₹'%></p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px"><%=item.service_tax_amount.toLocaleString('en-US')%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">IGST <%=item.restaurant.IGST_amount%><%=item.restaurant.IGST_type === 'percentage'?'%':'₹'%></p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px"><%=item.IGST_amount.toLocaleString('en-US')%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">SGST <%=item.restaurant.SGST_amount%><%=item.restaurant.SGST_type === 'percentage'?'%':'₹'%></p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px"><%=item.SGST_amount.toLocaleString('en-US')%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">CGST <%=item.restaurant.CGST_amount%><%=item.restaurant.CGST_type === 'percentage'?'%':'₹'%></p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px"><%=item.CGST_amount.toLocaleString('en-US')%></p>
+            </div>
+            <!-- <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Coupon discount</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px">₹12.00</p>
+            </div> -->
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;padding:0px 3px;">
+                <p style="font-family:Arial;margin:0px;font-size:14px;">Bill Total</p>
+                <p style="font-family:Arial;margin:0px;font-size:14px;margin:0px 2px;">:</p>
+                <p style="width:10mm;text-align: end;font-family:Arial;margin:0px;font-size:14px"><%=item.total.toLocaleString('en-US')%></p>
+            </div>
+        </div>
+        <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;margin-top:10px;">
+            <p style="font-family:Arial;margin:0px;font-weight:500;font-size:16px;">Grand Total</p>
+            <p style="font-family:Arial;margin:0px;font-size:16px;font-weight:500;margin:0px 2px;">:</p>
+            <p style="font-family:Arial;margin:0px;font-size:16px;font-weight:500;"><%='INR ' + Math.round(item.total).toLocaleString('en-US')%></p>
+        </div>
+        <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;">
+            <p style="font-family:Arial;margin:0px;font-size:11px;margin-top: 2px;">(Rounded off)</p>
+        </div>
+        <div style="width:100%;display:flex;display: -webkit-box;-webkit-box-orient: vertical;-webkit-box-align:start;margin-top:12px;">
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;align-self: flex-start">
+                <p style="font-family:Arial;margin:0px;font-size:13px;">FSSAI</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;"><%=item.restaurant.FSSAI_number%></p>
+            </div>
+            <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;align-self: flex-start">
+                <p style="font-family:Arial;margin:0px;font-size:13px;">GSTIN NO</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;margin:0px 1px;">:</p>
+                <p style="font-family:Arial;margin:0px;font-size:13px;"><%=item.restaurant.GSTIN_number%></p>
+            </div>
+        </div>
+        <div style="display:flex;display: -webkit-box;-webkit-box-pack: center;flex-direction: row;margin:16px 0px;">
+            <p style="font-family:Arial;margin:0px;font-size:20px;">Thank you. Visit again !!</p>
+        </div>
+    </div>
+</body>
+</html>
